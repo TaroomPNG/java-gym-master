@@ -23,18 +23,17 @@ public class Timetable {
             } else {
                 trainingMap.put(timeOfDay, new ArrayList<>(List.of(trainingSession)));
             }
-        }
-        else {
+        } else {
             TreeMap<TimeOfDay, List<TrainingSession>> trainingMap = new TreeMap<>(
                     new Comparator<TimeOfDay>() {
-                @Override
-                public int compare(TimeOfDay o1, TimeOfDay o2) {
-                    if (o1.getHours() == o2.getHours()) {
-                        return o1.getMinutes() - o2.getMinutes();
-                    } else
-                        return o1.getHours() - o2.getHours();
-                }
-            });
+                        @Override
+                        public int compare(TimeOfDay o1, TimeOfDay o2) {
+                            if (o1.getHours() == o2.getHours()) {
+                                return o1.getMinutes() - o2.getMinutes();
+                            } else
+                                return o1.getHours() - o2.getHours();
+                        }
+                    });
             trainingMap.put(timeOfDay, new ArrayList<>(List.of(trainingSession)));
 
             timetable.put(dayOfWeek, trainingMap);
@@ -44,8 +43,7 @@ public class Timetable {
     public TreeMap<TimeOfDay, List<TrainingSession>> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
         if (timetable.containsKey(dayOfWeek)) {
             return timetable.get(dayOfWeek);
-        }
-        else System.out.println("В день " + dayOfWeek + " тренировок нет");
+        } else System.out.println("В день " + dayOfWeek + " тренировок нет");
         return null;
         //как реализовать, тоже непонятно, но сложность должна быть О(1)
     }
@@ -59,5 +57,30 @@ public class Timetable {
         } else System.out.println("В день " + dayOfWeek + " тренировок нет");
         return null;
         //как реализовать, тоже непонятно, но сложность должна быть О(1)
+    }
+
+    public List<CounterOfTrainings> getCountByCoaches() {
+        Map<Coach, Integer> coachTrainingsCounterMap = new HashMap<>();
+        for (TreeMap<TimeOfDay, List<TrainingSession>> dayMap : timetable.values()) {
+            for (List<TrainingSession> sessions : dayMap.values()) {
+                for (TrainingSession session : sessions) {
+                    Coach coach = session.getCoach();
+                    coachTrainingsCounterMap.put(coach,
+                            coachTrainingsCounterMap.getOrDefault(coach, 0) + 1);
+                }
+            }
+        }
+
+        List<CounterOfTrainings> coachTrainingsCounterList = new ArrayList<>();
+        for (Map.Entry<Coach, Integer> entry : coachTrainingsCounterMap.entrySet()) {
+            coachTrainingsCounterList.add(new CounterOfTrainings(entry.getKey(), entry.getValue()));
+        }
+        coachTrainingsCounterList.sort(new Comparator<CounterOfTrainings>() {
+            @Override
+            public int compare(CounterOfTrainings o1, CounterOfTrainings o2) {
+                return Integer.compare(o2.getCount(), o1.getCount());
+            }
+        });
+        return coachTrainingsCounterList;
     }
 }
