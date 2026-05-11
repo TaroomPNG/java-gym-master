@@ -23,7 +23,7 @@ public class TimetableTest {
                 singleTrainingSession.getTimeOfDay()).size());
 
         //Проверить, что за вторник не вернулось занятий
-        assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        assertTrue(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).isEmpty());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class TimetableTest {
         assertEquals(thursdayAdultTrainingSession.getTimeOfDay(), iterator.next());
 
         // Проверить, что за вторник не вернулось занятий
-        assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        assertTrue(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).isEmpty());
     }
 
     @Test
@@ -83,8 +83,8 @@ public class TimetableTest {
         assertEquals(1, timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
                 singleTrainingSession.getTimeOfDay()).size());
         //Проверить, что за понедельник в 14:00 не вернулось занятий
-        assertNull(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
-                new TimeOfDay(14, 0)));
+        assertTrue(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
+                new TimeOfDay(14, 0)).isEmpty());
     }
 
 }
