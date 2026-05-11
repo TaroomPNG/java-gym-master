@@ -10,11 +10,11 @@ public class CounterOfTrainings {
     }
 
     public Coach getCoach() {
-        return coach;
+        return this.coach;
     }
 
     public int getCount() {
-        return count;
+        return this.count;
     }
 
     public void setCount(int count) {

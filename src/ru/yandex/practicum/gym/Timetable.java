@@ -1,8 +1,12 @@
 package ru.yandex.practicum.gym;
 
+import ru.yandex.practicum.gym.service.TimeOfDayComparator;
+
 import java.util.*;
 
 public class Timetable {
+
+    private static final Comparator<TimeOfDay> TIME_OF_DAY_COMPARATOR = new TimeOfDayComparator();
 
     private final Map<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new EnumMap<>(
             DayOfWeek.class
@@ -24,16 +28,7 @@ public class Timetable {
                 trainingMap.put(timeOfDay, new ArrayList<>(List.of(trainingSession)));
             }
         } else {
-            TreeMap<TimeOfDay, List<TrainingSession>> trainingMap = new TreeMap<>(
-                    new Comparator<TimeOfDay>() {
-                        @Override
-                        public int compare(TimeOfDay o1, TimeOfDay o2) {
-                            if (o1.getHours() == o2.getHours()) {
-                                return o1.getMinutes() - o2.getMinutes();
-                            } else
-                                return o1.getHours() - o2.getHours();
-                        }
-                    });
+            TreeMap<TimeOfDay, List<TrainingSession>> trainingMap = new TreeMap<>(TIME_OF_DAY_COMPARATOR);
             trainingMap.put(timeOfDay, new ArrayList<>(List.of(trainingSession)));
 
             timetable.put(dayOfWeek, trainingMap);
@@ -44,8 +39,7 @@ public class Timetable {
         if (timetable.containsKey(dayOfWeek)) {
             return timetable.get(dayOfWeek);
         } else System.out.println("В день " + dayOfWeek + " тренировок нет");
-        return null;
-        //как реализовать, тоже непонятно, но сложность должна быть О(1)
+        return new TreeMap<>(TIME_OF_DAY_COMPARATOR);
     }
 
     public List<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
@@ -53,10 +47,9 @@ public class Timetable {
             if (timetable.get(dayOfWeek).containsKey(timeOfDay)) {
                 return timetable.get(dayOfWeek).get(timeOfDay);
             } else System.out.println("В " + timeOfDay + " тренировок нет");
-            return null;
+            return new ArrayList<>();
         } else System.out.println("В день " + dayOfWeek + " тренировок нет");
-        return null;
-        //как реализовать, тоже непонятно, но сложность должна быть О(1)
+        return new ArrayList<>();
     }
 
     public List<CounterOfTrainings> getCountByCoaches() {

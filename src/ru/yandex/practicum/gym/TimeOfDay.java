@@ -39,10 +39,10 @@ public class TimeOfDay implements Comparable<TimeOfDay> {
     }
 
     public int getHours() {
-        return hours;
+        return this.hours;
     }
 
     public int getMinutes() {
-        return minutes;
+        return this.minutes;
     }
 }
