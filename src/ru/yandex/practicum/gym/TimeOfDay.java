@@ -15,6 +15,11 @@ public class TimeOfDay implements Comparable<TimeOfDay> {
     }
 
     @Override
+    public String toString() {
+        return hours + ":" + minutes;
+    }
+
+    @Override
     public int compareTo(TimeOfDay o) {
         if (hours != o.hours) return hours - o.hours;
         return minutes - o.minutes;
@@ -34,10 +39,10 @@ public class TimeOfDay implements Comparable<TimeOfDay> {
     }
 
     public int getHours() {
-        return hours;
+        return this.hours;
     }
 
     public int getMinutes() {
-        return minutes;
+        return this.minutes;
     }
 }

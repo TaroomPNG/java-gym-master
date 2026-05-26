@@ -1,6 +1,6 @@
 package ru.yandex.practicum.gym;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -19,7 +19,11 @@ public class TimetableTest {
         timetable.addNewTrainingSession(singleTrainingSession);
 
         //Проверить, что за понедельник вернулось одно занятие
+        assertEquals(1, timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
+                singleTrainingSession.getTimeOfDay()).size());
+
         //Проверить, что за вторник не вернулось занятий
+        assertTrue(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).isEmpty());
     }
 
     @Test
@@ -32,8 +36,6 @@ public class TimetableTest {
         TrainingSession thursdayAdultTrainingSession = new TrainingSession(groupAdult, coach,
                 DayOfWeek.THURSDAY, new TimeOfDay(20, 0));
 
-        timetable.addNewTrainingSession(thursdayAdultTrainingSession);
-
         Group groupChild = new Group("Акробатика для детей", Age.CHILD, 60);
         TrainingSession mondayChildTrainingSession = new TrainingSession(groupChild, coach,
                 DayOfWeek.MONDAY, new TimeOfDay(13, 0));
@@ -45,10 +47,25 @@ public class TimetableTest {
         timetable.addNewTrainingSession(mondayChildTrainingSession);
         timetable.addNewTrainingSession(thursdayChildTrainingSession);
         timetable.addNewTrainingSession(saturdayChildTrainingSession);
+        timetable.addNewTrainingSession(thursdayAdultTrainingSession);
 
         // Проверить, что за понедельник вернулось одно занятие
+        assertEquals(1, timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
+                mondayChildTrainingSession.getTimeOfDay()).size());
+
         // Проверить, что за четверг вернулось два занятия в правильном порядке: сначала в 13:00, потом в 20:00
+        TreeMap<TimeOfDay, List<TrainingSession>> thursdayMap =
+                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY);
+        assertNotNull(thursdayMap, "Карта для четверга не должна быть null");
+
+        Set<TimeOfDay> times = thursdayMap.navigableKeySet();
+
+        Iterator<TimeOfDay> iterator = times.iterator();
+        assertEquals(thursdayChildTrainingSession.getTimeOfDay(), iterator.next());
+        assertEquals(thursdayAdultTrainingSession.getTimeOfDay(), iterator.next());
+
         // Проверить, что за вторник не вернулось занятий
+        assertTrue(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).isEmpty());
     }
 
     @Test
@@ -63,7 +80,11 @@ public class TimetableTest {
         timetable.addNewTrainingSession(singleTrainingSession);
 
         //Проверить, что за понедельник в 13:00 вернулось одно занятие
+        assertEquals(1, timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
+                singleTrainingSession.getTimeOfDay()).size());
         //Проверить, что за понедельник в 14:00 не вернулось занятий
+        assertTrue(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY,
+                new TimeOfDay(14, 0)).isEmpty());
     }
 
 }

@@ -18,6 +18,11 @@ public class Coach {
     }
 
     @Override
+    public String toString() {
+        return name + " " + middleName;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

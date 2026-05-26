@@ -19,18 +19,18 @@ public class TrainingSession {
     }
 
     public Group getGroup() {
-        return group;
+        return this.group;
     }
 
     public Coach getCoach() {
-        return coach;
+        return this.coach;
     }
 
     public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
+        return this.dayOfWeek;
     }
 
     public TimeOfDay getTimeOfDay() {
-        return timeOfDay;
+        return this.timeOfDay;
     }
 }
